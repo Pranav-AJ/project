@@ -58,7 +58,7 @@ import matplotlib.pyplot as plt
 
 
 # In[42]:Read the image and convert the image into RGB
-image_path = 'sunset.jpg'
+image_path = 'bird1.jpg'
 img = cv2.imread(image_path)
 img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
@@ -70,32 +70,33 @@ plt.axis('off')
 plt.show()
 
 
-# In[45]:Set the pixels to display the ROI 
-hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-lower_yellow = np.array([22, 93, 0])#choose the RGB values accordingly to display specific color
-upper_yellow = np.array([45, 255, 255])
-mask = cv2.inRange(hsv_img, lower_yellow, upper_yellow)
+# Step 4: Set the pixels to display the ROI (Region of Interest)
+# Define the coordinates for the Region of Interest (ROI)
+# (startY:endY, startX:endX)
+roi = img[100:420, 200:550]  # ROI coordinates (adjust as needed)
+
+# Create a blank mask of the same size as the original image
+mask = np.zeros_like(img)
+
+# Place the ROI on the mask
+mask[100:420, 200:550] = roi
+
+# Step 5: Perform bitwise conjunction of the two arrays using bitwise_and
+segmented_roi = cv2.bitwise_and(img, mask)
 
 
-# In[48]:Perform bit wise conjunction of the two arrays  using bitwise_and 
-segmented_image = cv2.bitwise_and(img, img, mask=mask)
-
-
-# In[49]:Convert the image from BGR2RGB
-segmented_image_rgb = cv2.cvtColor(segmented_image, cv2.COLOR_BGR2RGB)
-
-
-# In[50]:Display the segmented ROI from an image.
-plt.imshow(segmented_image_rgb)
-plt.title('Segmented Image (Yellow)')
+# Step 6: Display the segmented ROI from the image
+segmented_roi_rgb = cv2.cvtColor(segmented_roi, cv2.COLOR_BGR2RGB)
+plt.imshow(segmented_roi_rgb)
+plt.title("Segmented ROI")
 plt.axis('off')
 plt.show()
 ```
 
 ## OUTPUT
 
-![image](https://github.com/user-attachments/assets/5cba67a7-355b-4e45-9353-26ee0973b48f)
-![image](https://github.com/user-attachments/assets/265260e5-45f9-4582-a212-76a7b3d8bd7c)
+![image](https://github.com/user-attachments/assets/92404c73-df4d-4909-8ffe-3e75ce9f7eec)
+![image](https://github.com/user-attachments/assets/a104ee1a-577d-4ddb-ba82-b81b942a7493)
 
 
 ## ii) Perform handwritting detection in an image.
